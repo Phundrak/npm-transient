@@ -93,8 +93,10 @@ nil."
       (error (concat "Error: cannot find " npm-mode--project-file-name)))
     (concat dir npm-mode--project-file-name)))
 
-(defun npm-mode--get-project-property (prop)
-  "Get the given PROP from the current project file."
+(defun npm-mode--get-project-property (prop &optional suffix)
+  "Get the given PROP from the current project file.
+If SUFFIX is non-nil, then it gets suffixed to the car of each
+value if the result is a list."
   (let* ((project-file (npm-mode--project-file))
          (json-object-type 'hash-table)
          (json-contents (with-temp-buffer
@@ -102,15 +104,15 @@ nil."
                           (buffer-string)))
          (json-hash (json-read-from-string json-contents))
          (value (gethash prop json-hash))
-         (commands (list)))
-    (cond ((hash-table-p value)
-           (maphash (lambda (key value)
-                      (setq commands
-                            (append commands
-                                    (list (list key (format "%s %s" "npm" key))))))
-                    value)
-           commands)
-          (t value))))
+         values)
+    (if (not (hash-table-p value))
+        value
+      (maphash (lambda (key value)
+                 (setq values
+                       (append values
+                               `((,(if suffix (concat key " " suffix) key) . ,key)))))
+               value)
+      values)))
 
 (defun npm-mode--get-project-scripts ()
   "Get a list of project scripts."
@@ -118,7 +120,11 @@ nil."
 
 (defun npm-mode--get-project-dependencies ()
   "Get a list of project dependencies."
-  (npm-mode--get-project-property "dependencies"))
+  (append (npm-mode--get-project-property "dependencies")
+          (npm-mode--get-project-property "devDependencies" "(dev)")
+          (npm-mode--get-project-property "peerDependencies" "(peer)")
+          (npm-mode--get-project-property "bundledDependencies" "(bundled)")
+          (npm-mode--get-project-property "optionalDependencies" "(optional)")))
 
 (defun npm-mode--exec-process (cmd)
   "Execute a process running CMD."
@@ -161,7 +167,9 @@ nil."
 (defun npm-mode-npm-uninstall ()
   "Run the \\='npm uninstall\\=' command."
   (interactive)
-  (let ((dep (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
+  (let* ((deps (npm-mode--get-project-dependencies))
+         (dep-read (completing-read "Uninstall dependency: " deps))
+         (dep (cdr (assoc-string dep-read deps))))
     (npm-mode--exec-process (format "npm uninstall %s" dep))))
 
 (defun npm-mode-npm-list ()
