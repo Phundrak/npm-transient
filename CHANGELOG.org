@@ -1,0 +1,14 @@
+#+title: Changelog
+
+* v0.7.0
+- Move ~CHANGES.md~ to ~CHANGELOG.org~
+- Move ~TODO.md~ to ~TODOs.org~
+- Move ~README.md~ to ~README.org~.
+- Add transient menu ~npm-mode-transient~
+- Add possibility to install and uninstall non-regural packages
+- Drop support for Emacs 24
+- Fix readability of compilation-mode buffers
+
+* v0.6.0
+- Add ~CHANGES.md~ file to track changes.
+- Add ~npm-mode-npm-list~ command and ~C-c n l~ keybinding.

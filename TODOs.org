@@ -1,0 +1,30 @@
+* TODO Add support for other package managers
+NPM is great and all, but some people use [[https://yarnpkg.com/][Yarn]] or more recently [[https://pnpm.io/][PNPM]].
+It would be nice to enable the user to use one of these two instead
+depending on a custom variable.
+
+See [[https://github.com/mojochao/npm-mode/issues/15][mojochao/npm-mode#15]]
+
+** TODO Automatically switch package manager depending on the project
+Depending on the lockfile present in the project, ~npm-mode~ should be
+able to automatically switch to a package manager or another.
+| lockfile          | associated package manager |
+|-------------------+----------------------------|
+| ~package-lock.json~ | NPM                        |
+| ~yarn.lock~         | Yarn                       |
+| ~pnpm-lock.json~    | PNPM                       |
+
+* TODO Add run in debugger support
+Add ~npm-mode-npm-run-debug~ command that will run a project script
+under the node debugger, and bind it to ~C-c n d~ in mode command
+keymap.
+
+* TODO Add ability to specialize command invocation in keymap
+Some commands, like ~npm install --depth=0~, provide options to alter
+the behavior of the command being run. This could be done with the
+help of transient.
+
+* TODO Add completing read support for installing packages
+It would be great if we could do completing read on packages to
+install that would list NPM packages available for install, much like
+the Emacs package manager does with ~package-install~ command.
