@@ -100,8 +100,7 @@ nil."
            (maphash (lambda (key value)
                       (setq commands
                             (append commands
-                                    (list (list key (format "%s %s" "npm" key))))
-                            ))
+                                    (list (list key (format "%s %s" "npm" key))))))
                     value)
            commands)
           (t value))))
@@ -128,7 +127,7 @@ nil."
   (interactive)
   (let ((dir (concat (file-name-directory (npm-mode--ensure-npm-module)) "node_modules")))
     (if (file-directory-p dir)
-      (when (yes-or-no-p (format "Are you sure you wish to delete %s" dir))
+      (when (yes-or-no-p (format "Are you sure you wish to delete %s?" dir))
         (npm-mode--exec-process (format "rm -rf %s" dir)))
       (message (format "%s has already been cleaned" dir)))))
 
