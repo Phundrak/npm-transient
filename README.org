@@ -1,6 +1,7 @@
 #+title: npm-mode
 #+author: Lucien Cartier-Tilet
 #+email: lucien@phundrak.com
+[[https://github.com/Phundrak/npm-mode/actions/workflows/workflow.yml][file:https://github.com/Phundrak/npm-mode/actions/workflows/workflow.yml/badge.svg]]
 
 * Introduction
 ~npm-mode~ is an Emacs minor mode for working with npm projects. This
