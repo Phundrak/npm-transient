@@ -206,9 +206,9 @@ nil."
 ;;;###autoload
 (define-minor-mode npm-mode
   "Minor mode for working with npm projects."
-  nil
-  npm-mode--modeline-name
-  npm-mode-keymap
+  :init-value nil
+  :lighter npm-mode--modeline-name
+  :keymap npm-mode-keymap
   :group 'npm-mode)
 
 ;;;###autoload
