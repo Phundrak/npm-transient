@@ -67,6 +67,11 @@ See the argument COMINT in function `compile'."
   :type 'boolean
   :safe #'booleanp)
 
+(defcustom npm-mode-command-prefix "C-c n"
+  "Prefix for npm-mode."
+  :group 'npm-mode
+  :type 'string)
+
 (defvar npm-mode--project-file-name "package.json"
   "The name of npm project files.")
 
@@ -178,11 +183,6 @@ nil."
   "Visit the project file."
   (interactive)
   (find-file (npm-mode--project-file)))
-
-(defcustom npm-mode-command-prefix "C-c n"
-  "Prefix for npm-mode."
-  :group 'npm-mode
-  :type 'string)
 
 (defvar npm-mode-command-keymap
   (let ((map (make-sparse-keymap)))
