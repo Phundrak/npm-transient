@@ -154,15 +154,58 @@ value if the result is a list."
   (interactive)
   (npm-mode--exec-process "npm install"))
 
-(defun npm-mode-npm-install-save (dep)
+;;; Installing Dependencies
+
+(defun npm-mode-npm-install-save (dep &optional dest)
+  "Run the \\='npm install --save\\=' command for DEP.
+If DEST is non-nil or if it has the value \\='regular, then
+DEP is installed as a regular dependency. Otherwise, it is
+installed as one of the following dependencies (and valid
+values):
+- dev
+- peer
+- bundled
+- optional
+DEST can be a string or a symbol."
+  (interactive (list (read-string "Enter package name: ")
+                     (completing-read "Type of dependency: "
+                                      '(regular
+                                        dev
+                                        peer
+                                        bundle
+                                        optional))))
+  (npm-mode--exec-process (format "npm install %s --save%s"
+                                  dep
+                                  (if (or (not dest)
+                                          (string= dest "regular"))
+                                      ""
+                                    (format "-%s" dest)))))
+
+(defun npm-mode-npm-install-save-regular (dep)
   "Run the \\='npm install --save\\=' command for DEP."
   (interactive "sEnter package name: ")
-  (npm-mode--exec-process (format "npm install %s --save" dep)))
+  (npm-mode-npm-install-save dep))
 
 (defun npm-mode-npm-install-save-dev (dep)
   "Run the \\='npm install --save-dev\\=' command for DEP."
   (interactive "sEnter package name: ")
-  (npm-mode--exec-process (format "npm install %s --save-dev" dep)))
+  (npm-mode-npm-install-save dep 'dev))
+
+(defun npm-mode-npm-install-save-peer (dep)
+  "Run the \\='npm install --save-peer\\=' command for DEP."
+  (interactive "sEnter package name: ")
+  (npm-mode-npm-install-save dep 'peer))
+
+(defun npm-mode-npm-install-save-bundle (dep)
+  "Run the \\='npm install --save-bundle\\=' command for DEP."
+  (interactive "sEnter package name: ")
+  (npm-mode-npm-install-save dep 'bundle))
+
+(defun npm-mode-npm-install-save-optional (dep)
+  "Run the \\='npm install --save-optional\\=' command for DEP."
+  (interactive "sEnter package name: ")
+  (npm-mode-npm-install-save dep 'optional))
+
 
 (defun npm-mode-npm-uninstall ()
   "Run the \\='npm uninstall\\=' command."
@@ -194,11 +237,18 @@ value if the result is a list."
 
 
 ;;; Transient definitions
+(transient-define-prefix npm-mode--transient-add-dependency ()
+  ["Install dependency as"
+   ("r" "Regular dependency" npm-mode-npm-install-save-regular)
+   ("d" "Dev dependency" npm-mode-npm-install-save-dev)
+   ("p" "Peer dependency" npm-mode-npm-install-save-peer)
+   ("b" "Bundle dependency" npm-mode-npm-install-save-bundle)
+   ("o" "Optional dependency" npm-mode-npm-install-save-optional)])
+
 (transient-define-prefix npm-mode-transient ()
   ["Dependencies"
    ("i" "Install dependencies" npm-mode-npm-install)
-   ("s" "Add dependency" npm-mode-npm-install-save)
-   ("d" "Add dev dependency" npm-mode-npm-install-save-dev)
+   ("s" "Add dependency" npm-mode--transient-add-dependency)
    ("u" "Uninstall depedency" npm-mode-npm-uninstall)
    ("l" "List dependencies" npm-mode-npm-list)]
   ["Actions"
