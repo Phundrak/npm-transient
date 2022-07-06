@@ -52,6 +52,20 @@
 
 (require 'json)
 
+(defgroup npm-mode nil
+  "Customization group for `npm-mode'."
+  :prefix "npm-mode-"
+  :group 'tools
+  :group 'convenience
+  :link '(url-link :tag "Github" "https://github.com/Phundrak/eshell-info-banner.el"))
+
+(defcustom npm-mode-comint t
+  "Colorize NPM’s buffer.
+See the argument COMINT in function `compile'."
+  :group 'npm-mode
+  :type 'boolean
+  :safe #'booleanp)
+
 (defvar npm-mode--project-file-name "package.json"
   "The name of npm project files.")
 
@@ -100,14 +114,14 @@ nil."
   "Get a list of project dependencies."
   (npm-mode--get-project-property "dependencies"))
 
-(defun npm-mode--exec-process (cmd &optional comint)
+(defun npm-mode--exec-process (cmd)
   "Execute a process running CMD."
   (let ((compilation-buffer-name-function
          (lambda (mode)
            (format "*npm:%s - %s*"
                    (npm-mode--get-project-property "name") cmd))))
     (message (concat "Running " cmd))
-    (compile cmd comint)))
+    (compile cmd npm-mode-comint)))
 
 (defun npm-mode-npm-clean ()
   "Run the 'npm list' command."
@@ -152,25 +166,22 @@ nil."
 (defun npm-run--read-command ()
   (completing-read "Run script: " (npm-mode--get-project-scripts)))
 
-(defun npm-mode-npm-run (script &optional comint)
+(defun npm-mode-npm-run (script)
   "Run the 'npm run' command on a project script."
   (interactive
    (list (npm-run--read-command)
          (consp current-prefix-arg)))
-  (npm-mode--exec-process (format "npm run %s" script) comint))
+  (npm-mode--exec-process (format "npm run %s" script)))
 
 (defun npm-mode-visit-project-file ()
   "Visit the project file."
   (interactive)
   (find-file (npm-mode--project-file)))
 
-(defgroup npm-mode nil
-  "Customization group for npm-mode."
-  :group 'convenience)
-
 (defcustom npm-mode-command-prefix "C-c n"
   "Prefix for npm-mode."
-  :group 'npm-mode)
+  :group 'npm-mode
+  :type 'string)
 
 (defvar npm-mode-command-keymap
   (let ((map (make-sparse-keymap)))
