@@ -5,7 +5,7 @@
 ;; Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
 ;; Url: https://github.com/Phundrak/npm-mode
 ;; Keywords: convenience, project, javascript, node, npm
-;; Package-Requires: ((emacs "24.1"))
+;; Package-Requires: ((emacs "24.4"))
 
 ;; This file is NOT part of GNU Emacs.
 
