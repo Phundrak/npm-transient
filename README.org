@@ -1,0 +1,170 @@
+#+title: npm-mode
+#+author: Lucien Cartier-Tilet
+#+email: lucien@phundrak.com
+
+* Introduction
+~npm-mode~ is an Emacs minor mode for working with npm projects. This
+fork is based on @mojochao’s [[https://github.com/mojochao/npm-mode][original package]].
+
+* Table of Contents                                                :TOC_2_gh:
+- [[#introduction][Introduction]]
+- [[#installation][Installation]]
+  - [[#manual-installation][Manual Installation]]
+  - [[#straight-and-use-package][Straight and use-package]]
+- [[#configuration][Configuration]]
+  - [[#local-activation][Local Activation]]
+  - [[#global-activation][Global Activation]]
+  - [[#project-activation][Project activation]]
+  - [[#command-keymap-prefix][Command Keymap Prefix]]
+  - [[#clean-output-in-npms-buffer][Clean Output in NPM’s Buffer]]
+- [[#usage][Usage]]
+  - [[#command-keymap][Command Keymap]]
+  - [[#npm-mode-npm-init][npm-mode-npm-init]]
+  - [[#npm-mode-npm-install][npm-mode-npm-install]]
+  - [[#npm-mode-npm-install-save][npm-mode-npm-install-save]]
+  - [[#npm-mode-npm-install-save-dev][npm-mode-npm-install-save-dev]]
+  - [[#npm-mode-npm-uninstall][npm-mode-npm-uninstall]]
+  - [[#npm-mode-npm-list][npm-mode-npm-list]]
+  - [[#npm-mode-npm-run][npm-mode-npm-run]]
+  - [[#npm-mode-visit-project-file][npm-mode-visit-project-file]]
+- [[#acknowledgements][Acknowledgements]]
+
+* Installation
+This fork of ~npm-mode~ is not available on any package repository, so
+your only options are manual or semi-manual installation as shown
+below.
+
+** Manual Installation
+Start by cloning the ~npm-mode~ repository wherever you wish to:
+#+begin_src sh
+git clone https://github.com/Phundrak/npm-mode.git
+#+end_src
+
+Then, edit your Emacs configuration file (~$HOME/.emacs~,
+~$HOME/.emacs.d/init.el~, or ~$XDG_CONFIG_DIR/emacs/init.el~) to include
+the following lines:
+#+begin_src emacs-lisp
+(add-to-list 'load-path "path/to/your/clone/npm-mode")
+(require 'npm-mode)
+#+end_src
+
+** Straight and use-package
+You can use ~straight~ with ~use-package~ to install this version of
+~npm-mode~. To do so, you can use the following snippet:
+#+begin_src emacs-lisp
+(use-package npm-mode
+  :straight (npm-mode :type git
+                      :host github
+                      :fork "Phundrak/npm-mode"))
+#+end_src
+
+If you want to enable ~npm-mode~ automatically in other modes, you can
+do the following:
+#+begin_src emacs-lisp
+(use-package npm-mode
+  :straight (npm-mode :type git
+                      :host github
+                      :fork "Phundrak/npm-mode")
+  :hook js-mode ;; for only one mode, or
+  :hook (web-mode js-mode rjsx-mode)) ;; for multiple modes at once
+#+end_src
+
+* Configuration
+** Local Activation
+~npm-mode~ provides a minor mode which can be activated with ~(npm-mode)~
+or ~M-x npm-mode~.
+
+** Global Activation
+The minor mode can be activated globally with ~(npm-global-mode)~ or ~M-x
+npm-global-mode~.
+
+** Project activation
+The mode can be activated on a per-project basis using directory local
+variables. To do so:
+1. Run ~M-x add-dir-local-variable~ in the root of your project
+2. Select the major mode you wish to enable ~npm-mode~ for (it can be
+   ~nil~ to activate it regardless of the current major mode)
+3. Select ~mode~
+4. Finally select ~npm-mode~
+This should result in a ~.dir-locals.el~ file that looks like this:
+#+begin_src emacs-lisp
+;;; Directory Local Variables
+;;; For more information see (info "(emacs) Directory Variables")
+
+((nil . ((mode . npm))))
+#+end_src
+
+Now, each time a file from the same directory or a subdirectory is
+opened, Emacs will enable ~npm-mode~ for this new buffer by default. If
+a file is already opened, you can re-open it with ~find-alternate-file~
+(don’t forget to save your file before).
+
+** Command Keymap Prefix
+The mode provides a command keymap, which default ~C-c n~ can be
+configured with ~M-x customize-variable npm-mode-keymap-prefix~ or with
+a simple ~(setq npm-mode-keymap-prefix "your keyboard prefix here")~ (of
+course, it needs to be a valid keyboard prefix).
+
+** Clean Output in NPM’s Buffer
+If for whatever reason the output in NPM’s buffer looks wrong, you can
+try setting ~npm-mode-comint~ to ~nil~. I don’t think it will look any
+better though, but just in case.
+
+* Usage
+** Command Keymap
+Once ~npm-mode~ has been activated, its commands are accessed by the
+command prefix defined in ~npm-mode-keymap-prefix~ (see [[#command-keymap-prefix][Command Keymap
+Prefix]]).
+| Command                       | Key | Description                         |
+|-------------------------------+-----+-------------------------------------|
+| npm-mode-npm-init             | ~n~   | Initialize new project              |
+| npm-mode-npm-install          | ~i~   | Install all project dependencies    |
+| npm-mode-npm-install-save     | ~s~   | Add new project dependency          |
+| npm-mode-npm-install-save-dev | ~d~   | Add new project dev dependency      |
+| npm-mode-npm-uninstall        | ~u~   | Remove project dependency           |
+| npm-mode-npm-list             | ~l~   | List installed project dependencies |
+| npm-mode-npm-run              | ~r~   | Run project script                  |
+| npm-mode-visit-project-file   | ~v~   | Visit project ~package.json~ file     |
+|                               | ~?~   | Display keymap commands             |
+
+** npm-mode-npm-init
+Running ~C-c n n~ will create a new project in the current directory.
+
+** npm-mode-npm-install
+
+Running ~C-c n i~ in a project directory will install all project
+dependencies.
+
+** npm-mode-npm-install-save
+
+Running ~C-c n s~ in a project directory will prompt for the name of a
+package to install and will install it as a project dependency.
+
+** npm-mode-npm-install-save-dev
+
+Running ~C-c n d~ in a project directory will prompt for the name of a
+to install and will install it as a project dev dependency.
+
+** npm-mode-npm-uninstall
+
+Running ~C-c n u~ in a project directory will prompt for the name of a
+package to uninstall and will uninstall it and remove it from project
+dependencies.
+
+** npm-mode-npm-list
+
+Running ~C-c n l~ in a project directory will list the project.
+
+** npm-mode-npm-run
+
+Running ~C-c n r~ in a project directory will prompt for the name of a
+script to run and will run it. Completion support is provided.
+
+** npm-mode-visit-project-file
+
+Running ~C-c n v~ in a project directory will visit the project file in
+a buffer.
+
+* Acknowledgements
+This repo is a rewrite of @mojochao’s [[https://github.com/mojochao/npm-mode][original package]], and its
+history has been preserved.
