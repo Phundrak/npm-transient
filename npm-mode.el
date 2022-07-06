@@ -2,7 +2,8 @@
 
 ;; Version: 0.6.0
 ;; Author: Allen Gooch <allen.gooch@gmail.com>
-;; Url: https://github.com/mojochao/npm-mode
+;; Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
+;; Url: https://github.com/Phundrak/npm-mode
 ;; Keywords: convenience, project, javascript, node, npm
 ;; Package-Requires: ((emacs "24.1"))
 
