@@ -73,7 +73,7 @@ See the argument COMINT in function `compile'."
   "Name of npm mode modeline name.")
 
 (defun npm-mode--ensure-npm-module ()
-  "Asserts that you're currently inside an npm module"
+  "Assert the current directory is inside an npm module."
   (npm-mode--project-file))
 
 (defun npm-mode--project-file ()
@@ -124,7 +124,7 @@ nil."
     (compile cmd npm-mode-comint)))
 
 (defun npm-mode-npm-clean ()
-  "Run the 'npm list' command."
+  "Run the \\='npm list\\=' command."
   (interactive)
   (let ((dir (concat (file-name-directory (npm-mode--ensure-npm-module)) "node_modules")))
     (if (file-directory-p dir)
@@ -133,41 +133,42 @@ nil."
       (message (format "%s has already been cleaned" dir)))))
 
 (defun npm-mode-npm-init ()
-  "Run the npm init command."
+  "Run the \\='npm init\\=' command."
   (interactive)
   (npm-mode--exec-process "npm init"))
 
 (defun npm-mode-npm-install ()
-  "Run the 'npm install' command."
+  "Run the \\='npm install\\=' command."
   (interactive)
   (npm-mode--exec-process "npm install"))
 
 (defun npm-mode-npm-install-save (dep)
-  "Run the 'npm install --save' command for DEP."
+  "Run the \\='npm install --save\\=' command for DEP."
   (interactive "sEnter package name: ")
   (npm-mode--exec-process (format "npm install %s --save" dep)))
 
 (defun npm-mode-npm-install-save-dev (dep)
-  "Run the 'npm install --save-dev' command for DEP."
+  "Run the \\='npm install --save-dev\\=' command for DEP."
   (interactive "sEnter package name: ")
   (npm-mode--exec-process (format "npm install %s --save-dev" dep)))
 
 (defun npm-mode-npm-uninstall ()
-  "Run the 'npm uninstall' command."
+  "Run the \\='npm uninstall\\=' command."
   (interactive)
   (let ((dep (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
     (npm-mode--exec-process (format "npm uninstall %s" dep))))
 
 (defun npm-mode-npm-list ()
-  "Run the 'npm list' command."
+  "Run the \\='npm list\\=' command."
   (interactive)
   (npm-mode--exec-process "npm list --depth=0"))
 
 (defun npm-run--read-command ()
+  "Read command from user."
   (completing-read "Run script: " (npm-mode--get-project-scripts)))
 
 (defun npm-mode-npm-run (script)
-  "Run the 'npm run' command on a project script."
+  "Run the \\='npm run\\=' command on a project SCRIPT."
   (interactive
    (list (npm-run--read-command)
          (consp current-prefix-arg)))
