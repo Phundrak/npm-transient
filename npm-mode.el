@@ -192,25 +192,6 @@ value if the result is a list."
   (interactive)
   (find-file (npm-mode--project-file)))
 
-(defvar npm-mode-command-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map "n" 'npm-mode-npm-init)
-    (define-key map "i" 'npm-mode-npm-install)
-    (define-key map "s" 'npm-mode-npm-install-save)
-    (define-key map "d" 'npm-mode-npm-install-save-dev)
-    (define-key map "u" 'npm-mode-npm-uninstall)
-    (define-key map "l" 'npm-mode-npm-list)
-    (define-key map "r" 'npm-mode-npm-run)
-    (define-key map "v" 'npm-mode-visit-project-file)
-    map)
-  "Keymap for npm-mode commands.")
-
-(defvar npm-mode-keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd npm-mode-command-prefix) npm-mode-command-keymap)
-    map)
-  "Keymap for `npm-mode'.")
-
 
 ;;; Transient definitions
 (transient-define-prefix npm-mode-transient ()
@@ -225,6 +206,29 @@ value if the result is a list."
    ("r" "Run script" npm-mode-npm-run)
    ("v" "Visit package.json" npm-mode-visit-project-file)
    ("q" "Quit" (lambda () (interactive) nil))])
+
+
+;;; Keymap definition
+
+(defvar npm-mode-command-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map "n" 'npm-mode-npm-init)
+    (define-key map "i" 'npm-mode-npm-install)
+    (define-key map "s" 'npm-mode-npm-install-save)
+    (define-key map "d" 'npm-mode-npm-install-save-dev)
+    (define-key map "u" 'npm-mode-npm-uninstall)
+    (define-key map "l" 'npm-mode-npm-list)
+    (define-key map "r" 'npm-mode-npm-run)
+    (define-key map "v" 'npm-mode-visit-project-file)
+    (define-key map "t" 'npm-mode-transient)
+    map)
+  "Keymap for npm-mode commands.")
+
+(defvar npm-mode-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd npm-mode-command-prefix) npm-mode-command-keymap)
+    map)
+  "Keymap for `npm-mode'.")
 
 
 ;;; Minor mode definitions

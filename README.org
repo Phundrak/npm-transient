@@ -19,6 +19,7 @@ fork is based on @mojochao’s [[https://github.com/mojochao/npm-mode][original 
   - [[#command-keymap-prefix][Command Keymap Prefix]]
   - [[#clean-output-in-npms-buffer][Clean Output in NPM’s Buffer]]
 - [[#usage][Usage]]
+  - [[#transient-menu][Transient Menu]]
   - [[#command-keymap][Command Keymap]]
   - [[#npm-mode-npm-init][npm-mode-npm-init]]
   - [[#npm-mode-npm-install][npm-mode-npm-install]]
@@ -112,21 +113,28 @@ try setting ~npm-mode-comint~ to ~nil~. I don’t think it will look any
 better though, but just in case.
 
 * Usage
+** Transient Menu
+An innoviation of this fork is the transient menu for ~npm-mode~. It can
+be called with ~M-x npm-mode-transient~ and currently offers the same
+options as the minor mode’s keymap without the need of activating the
+minor mode itself.
+
 ** Command Keymap
 Once ~npm-mode~ has been activated, its commands are accessed by the
 command prefix defined in ~npm-mode-command-prefix~ (see [[#command-keymap-prefix][Command Keymap
 Prefix]]).
-| Command                       | Key | Description                         |
-|-------------------------------+-----+-------------------------------------|
-| npm-mode-npm-init             | ~n~   | Initialize new project              |
-| npm-mode-npm-install          | ~i~   | Install all project dependencies    |
-| npm-mode-npm-install-save     | ~s~   | Add new project dependency          |
-| npm-mode-npm-install-save-dev | ~d~   | Add new project dev dependency      |
-| npm-mode-npm-uninstall        | ~u~   | Remove project dependency           |
-| npm-mode-npm-list             | ~l~   | List installed project dependencies |
-| npm-mode-npm-run              | ~r~   | Run project script                  |
-| npm-mode-visit-project-file   | ~v~   | Visit project ~package.json~ file     |
-|                               | ~?~   | Display keymap commands             |
+| Command                       | Key | Description                          |
+|-------------------------------+-----+--------------------------------------|
+| npm-mode-npm-init             | ~n~   | Initialize new project               |
+| npm-mode-npm-install          | ~i~   | Install all project dependencies     |
+| npm-mode-npm-install-save     | ~s~   | Add new project dependency           |
+| npm-mode-npm-install-save-dev | ~d~   | Add new project dev dependency       |
+| npm-mode-npm-uninstall        | ~u~   | Remove project dependency            |
+| npm-mode-npm-list             | ~l~   | List installed project dependencies  |
+| npm-mode-npm-run              | ~r~   | Run project script                   |
+| npm-mode-visit-project-file   | ~v~   | Visit project ~package.json~ file      |
+| npm-mode-transient            | ~t~   | Open the transient menu for npm-mode |
+|                               | ~?~   | Display keymap commands              |
 
 ** npm-mode-npm-init
 Running ~C-c n n~ will create a new project in the current directory.
