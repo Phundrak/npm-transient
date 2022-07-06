@@ -5,7 +5,7 @@
 ;; Maintainer: Lucien Cartier-Tilet <lucien@phundrak.com>
 ;; Url: https://github.com/Phundrak/npm-mode
 ;; Keywords: convenience, project, javascript, node, npm
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "25.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -52,6 +52,7 @@
 ;;; Code:
 
 (require 'json)
+(require 'transient)
 
 (defgroup npm-mode nil
   "Customization group for `npm-mode'."
@@ -175,8 +176,7 @@ nil."
 (defun npm-mode-npm-run (script)
   "Run the \\='npm run\\=' command on a project SCRIPT."
   (interactive
-   (list (npm-run--read-command)
-         (consp current-prefix-arg)))
+   (list (npm-run--read-command)))
   (npm-mode--exec-process (format "npm run %s" script)))
 
 (defun npm-mode-visit-project-file ()
@@ -202,6 +202,24 @@ nil."
     (define-key map (kbd npm-mode-command-prefix) npm-mode-command-keymap)
     map)
   "Keymap for `npm-mode'.")
+
+
+;;; Transient definitions
+(transient-define-prefix npm-mode-transient ()
+  ["Dependencies"
+   ("i" "Install dependencies" npm-mode-npm-install)
+   ("s" "Add dependency" npm-mode-npm-install-save)
+   ("d" "Add dev dependency" npm-mode-npm-install-save-dev)
+   ("u" "Uninstall depedency" npm-mode-npm-uninstall)
+   ("l" "List dependencies" npm-mode-npm-list)]
+  ["Actions"
+   ("n" "Init project" npm-mode-npm-init)
+   ("r" "Run script" npm-mode-npm-run)
+   ("v" "Visit package.json" npm-mode-visit-project-file)
+   ("q" "Quit" (lambda () (interactive) nil))])
+
+
+;;; Minor mode definitions
 
 ;;;###autoload
 (define-minor-mode npm-mode
