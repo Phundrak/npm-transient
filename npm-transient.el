@@ -257,12 +257,15 @@ which can be set in the dependencies transient menu."
       (delete-region (point) (point-min))
       (goto-char (point-min))
       (save-match-data
-        (while (re-search-forward (rx (group (+ (not space)))
-                                      "@"
-                                      (group (+ (not space)))
-                                      (* (not "@"))
-                                      eol)
-                                  nil t)
+        (while (re-search-forward
+                "\\([^[:space:]]+\\)@\\([^[:space:]]+\\)[^@]*$"
+                ;; XXX: Apparently (not "@") isn’t valid prior to Emacs 27
+                ;; (rx (group (+ (not space)))
+                ;;     "@"
+                ;;     (group (+ (not space)))
+                ;;     (* (not "@"))
+                ;;     eol)
+                nil t)
           (add-to-list 'packages
                        (list nil (vector (match-string 1) (match-string 2)))
                        t))))
