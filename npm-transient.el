@@ -89,22 +89,26 @@ Internal variable for transient menus.")
            :argument ,(concat "--" name)
            :reader (lambda (&rest _) ,@reader)))))
 
+  ;;;###autoload (autoload 'npm-transient "npm-transient" nil t)
   (npm-transient--define-infix
    "-p" "package-manager-arguments" "Package manager arguments"
    'string ""
    (read-string "Package manager arguments: "))
 
+  ;;;###autoload (autoload 'npm-transient "npm-transient" nil t)
   (npm-transient--define-infix
    "-c" "command-arguments" "Package manager’s subcommand arguments"
    'string ""
    (read-string "Package manager’s subcommand arguments: "))
 
+  ;;;###autoload (autoload 'npm-transient "npm-transient" nil t)
   (npm-transient--define-infix
    "-d" "dep-dest" "How to install the dependency"
    'symbol 'regular
    (intern (completing-read "How to install the dependency: "
                             '(regular dev peer bundle optional))))
 
+  ;;;###autoload (autoload 'npm-transient "npm-transient" nil t)
   (npm-transient--define-infix
    "-D" "list-depth" "Depth when listing dependencies (unused for now)"
    'integer 0
