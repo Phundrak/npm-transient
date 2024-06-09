@@ -300,7 +300,7 @@ which can be set in the dependencies transient menu."
   "Run an npm SCRIPT."
   (interactive
    (list (completing-read "Run script: " (npm-transient--get-project-scripts))))
-  (npm-transient--exec-command :comand "run" :arguments script))
+  (npm-transient--exec-command :command "run" :arguments script))
 
 (defun npm-transient--visit-project-file ()
   "Visit the project file."
